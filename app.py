@@ -1,6 +1,6 @@
-from Tkinter import *
-from PIL import Image, ImageTk
-import tkMessageBox
+from tkinter import *
+from PIL import Image, ImageTk   # pillow version 4.0.0 working pillow 5.0+ not working
+from tkinter import messagebox as tkMessageBox
 import os
 
 # setting various parameters
@@ -60,6 +60,11 @@ class AutoDel:
 
     def get_info(self):
 
+        #Delete confirmation check
+        MsgBox = tk.messagebox.askquestion ('Exit Application','Are you sure you want to exit the application',icon = 'warning')
+        if MsgBox == 'no':
+            return
+        
         # get parameters
         get_loc = self.entry_loc.get()
         scale_value = self.scale.get()
