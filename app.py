@@ -61,7 +61,7 @@ class AutoDel:
     def get_info(self):
 
         #Delete confirmation check
-        MsgBox = tk.messagebox.askquestion ('Exit Application','Are you sure you want to exit the application',icon = 'warning')
+        MsgBox = tk.messagebox.askquestion ('Exit Application','Are you sure you want to Delete??',icon = 'warning')
         if MsgBox == 'no':
             return
         
