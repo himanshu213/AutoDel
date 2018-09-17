@@ -1,12 +1,19 @@
-from tkinter import *
-from PIL import Image, ImageTk   # pillow version 4.0.0 working pillow 5.0+ not working
-from tkinter import messagebox as tkMessageBox
-import os
+try:   #python 3.0+ support
+    from tkinter import *
+    from PIL import Image, ImageTk       # pillow version 4.0.0
+    from tkinter import messagebox as tkMessageBox
+    import os
+except: #python2 support
+    from Tkinter import *
+    from PIL import Image, ImageTk
+    import tkMessageBox
+    import os
 
 # setting various parameters
 ICON = 'Images/page.ico'
 IMAGE = Image.open("Images/location.png")
 UNITS = {"MB": 2**20, "KB": 2**10, "GB": 2**30}
+
 
 class AutoDel:
     def __init__(self, master):
@@ -60,11 +67,10 @@ class AutoDel:
 
     def get_info(self):
 
-        #Delete confirmation check
-        MsgBox = tk.messagebox.askquestion ('Exit Application','Are you sure you want to Delete??',icon = 'warning')
+        MsgBox = messagebox.askquestion ('Exit Application','Are you sure you want to Delete',icon = 'warning')
         if MsgBox == 'no':
             return
-        
+       
         # get parameters
         get_loc = self.entry_loc.get()
         scale_value = self.scale.get()
@@ -79,47 +85,43 @@ class AutoDel:
             tkMessageBox.showinfo("Error", "Invalid folder location. Please enter location in the format shown in image!")
             return
 
-        # get the list of files in the folder
-        all_files = []
-        for root, dirs, files in os.walk(loc, topdown=True):
-            all_files = files
-            break
-
         # sort files accordingly
         if param == "Above specified size":
-            no_files = self.delete(all_files, True, loc, desired_size_in_bytes)
+            no_files = self.delete(True, loc, desired_size_in_bytes)
         elif param ==  'All Files':
             # To delete all files at once
-            no_files = self.delete(all_files, True, loc, 0)
+            no_files = self.delete(True, loc, 0)
         else:
-            no_files =self.delete(all_files, False, loc, desired_size_in_bytes)
+            no_files =self.delete(False, loc, desired_size_in_bytes)
 
         notify = "{} files deleted!".format(no_files)
         tkMessageBox.showinfo("Notification", notify)
 
-    def delete(self, files, reverse, dir, size):
+    def delete(self, reverse, dir, size):
         ''' delete files according to value of reverse '''
         files_count = 0
 
         if reverse: # when you've to delete files above a specific size
-            for file in files:
-                abspath = dir + '/' + file
-                if os.path.getsize(abspath) > size:
-                    try:
-                        os.remove(abspath)
-                        files_count += 1
-                    except:
-                        pass
+            for root, dirs, files in os.walk(dir, topdown=True):
+                for file in files:
+                    abspath = dir + '/' + file
+                    if os.path.getsize(abspath) > size:
+                        try:
+                            os.remove(abspath)
+                            files_count += 1
+                        except:
+                            pass
 
         else: # when you've to delete files below a specific size
-            for file in files:
-                abspath = dir + '\\' + file
-                if os.path.getsize(abspath) < size:
-                    try:
-                        os.remove(abspath)
-                        files_count += 1
-                    except:
-                        pass
+            for root, dirs, files in os.walk(dir, topdown=True):
+                for file in files:
+                    abspath = dir + '\\' + file
+                    if os.path.getsize(abspath) < size:
+                        try:
+                            os.remove(abspath)
+                            files_count += 1
+                        except:
+                            pass
         return files_count
 
     def make_menu(self, w):
@@ -147,3 +149,4 @@ root.iconbitmap(ICON)
 my_gui = AutoDel(root)
 my_gui.make_menu(root)
 root.mainloop()
+
