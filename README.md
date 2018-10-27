@@ -1,4 +1,4 @@
-# AutoDel
+﻿# AutoDel
 ![App Preview](Images/Capture.PNG)
 
 <b>A desktop app for WINDOWS OS to delete thousands of files in the blink of an eye using `size parameter`<i>(except all the <u>`Read-only`</u> files)</b>
@@ -15,7 +15,7 @@
 * clone the repository `$ git clone https://github.com/ab-anand/AutoDel.git`
 * `$ cd AutoDel`
 * `$ pip install -r requirements.txt`
-* `$ python app.py`
+* `$ python app.py`//kjdnaj
 
 ## Instructions
 
